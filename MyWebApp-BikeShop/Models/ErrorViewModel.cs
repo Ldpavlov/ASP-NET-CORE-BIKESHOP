@@ -1,5 +1,3 @@
-using System;
-
 namespace MyWebApp_BikeShop.Models
 {
     public class ErrorViewModel
