@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 namespace MyWebApp_BikeShop
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -66,9 +66,7 @@ namespace MyWebApp_BikeShop
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
-            });
-
-            
+            });            
         }
     }
 }

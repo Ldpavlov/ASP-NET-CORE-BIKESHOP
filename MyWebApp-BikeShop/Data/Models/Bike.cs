@@ -22,6 +22,7 @@
         [Required]
         public string ImageUrl { get; set; }
 
+        [Range(BikeYearMinValue, BikeYearMaxValue)]
         public int Year { get; set; }
 
         public int CategoryId { get; set; }
