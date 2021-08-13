@@ -1,0 +1,15 @@
+﻿@model DetailsBikeViewModel
+@{ 
+    ViewData["Title"] = "Bike Details";
+}
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Brand @Model.Model - @Model.Year">
+        <div class="card-body text-center">
+            <h5 class="card-title text-center">@Model.Brand @Model.Model @Model.Year</h5>
+            <a asp-controller="Bikes" asp-action="Details" class="btn btn-primary float-left">Details</a>
+            <a asp-controller="Bikes" asp-action="Details" class="btn btn-primary float-right">Rent</a>
+        </div>
+    </div>
+</div>

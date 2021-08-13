@@ -29,5 +29,8 @@
 
         public Category Category { get; init; }
 
+        public int SellerId { get; init; }
+
+        public Seller Seller { get; set; }
     }
 }
