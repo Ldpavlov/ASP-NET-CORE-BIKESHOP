@@ -30,12 +30,7 @@
                     ImageUrl = b.ImageUrl
                 })
                 .ToList();
-
-            return View(new IndexViewModel
-            {
-                TotalBikes = totalBikes,
-                Bikes = bikes
-            }); 
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

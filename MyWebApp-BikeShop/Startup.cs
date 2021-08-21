@@ -9,6 +9,7 @@ namespace MyWebApp_BikeShop
     using Microsoft.Extensions.Hosting;
     using MyWebApp_BikeShop.Data;
     using MyWebApp_BikeShop.Infrastructure;
+    using MyWebApp_BikeShop.Services.Bikes;
 
     public class Startup
     {
@@ -37,6 +38,7 @@ namespace MyWebApp_BikeShop
                 .AddEntityFrameworkStores<BikeShopDbContext>();
             services
                 .AddControllersWithViews();
+            services.AddTransient<IBikeService, BikeService>();
         }
       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
