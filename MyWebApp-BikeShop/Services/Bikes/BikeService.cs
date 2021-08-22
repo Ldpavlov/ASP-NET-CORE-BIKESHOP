@@ -5,7 +5,6 @@
     using Microsoft.EntityFrameworkCore;
     using MyWebApp_BikeShop.Data;
     using MyWebApp_BikeShop.Data.Models;
-    using MyWebApp_BikeShop.Models.Bikes;
     using MyWebApp_BikeShop.Services.Bikes.Models;
     using System.Collections.Generic;
     using System.Linq;
@@ -138,6 +137,13 @@
                 .Bikes
                 .Any(c => c.Id == bikeId && c.SellerId == sellerId);
 
+        public void Delete(int id)
+        {
+            var bike = this.data.Bikes.FirstOrDefault(b => b.Id == id);
 
+            this.data.Bikes.Remove(bike);
+            this.data.SaveChanges();
+        }
+        
     }
 }

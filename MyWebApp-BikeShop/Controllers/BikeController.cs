@@ -54,9 +54,7 @@
                 .Skip((query.CurrentPage - 1) * AllBikesViewModel.BikesPerPage)
                 .Take(AllBikesViewModel.BikesPerPage)
                 .AsQueryable()
-                .ProjectTo<BikeListingViewModel>(this.selectionMapper);
-
-            
+                .ProjectTo<BikeListingViewModel>(this.selectionMapper);           
 
             var bikeBrands = bikeService.Brands();
 
@@ -172,14 +170,14 @@
                 return BadRequest();
             }
 
-            var bikeEdited = this.bikeService.Edit(
-                id,
-            bike.Brand,
-            bike.Model,
-            bike.Description,
-            bike.ImageUrl,
-            bike.Year,
-            bike.CategoryId);
+            var bikeEdited = this.bikeService
+                .Edit(id,
+                      bike.Brand,
+                      bike.Model,
+                      bike.Description,
+                      bike.ImageUrl,
+                      bike.Year,
+                      bike.CategoryId);
 
             if (!bikeEdited)
             {
@@ -187,6 +185,25 @@
             }
 
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.GetId();
+
+            if (!this.sellerService.IsValidSeller(userId))
+            {
+                return RedirectToAction(nameof(SellersController.Become), "Sellers");
+            }
+
+            if(this.bikeService.GetUserId(id) != userId)
+            {
+                return Unauthorized();
+            }
+
+            this.bikeService.Delete(id);
+
+            return RedirectToAction(nameof(BikeController.All), "Bike");
         }
     }
 

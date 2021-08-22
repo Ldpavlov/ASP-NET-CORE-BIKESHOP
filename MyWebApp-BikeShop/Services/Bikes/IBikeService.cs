@@ -16,5 +16,6 @@
         public bool Edit(int id,string brand, string model, string description, string imageUrl, int year, int categoryId);
         public string GetUserId(int id);
         public bool IsSeller(int bikeId, int sellerId);
+        public void Delete(int id);
     }
 }
