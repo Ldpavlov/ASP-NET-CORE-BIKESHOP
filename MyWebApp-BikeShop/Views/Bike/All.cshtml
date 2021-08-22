@@ -40,8 +40,7 @@
                 <img class="card-img-top" src="@bike.ImageUrl" alt="@bike.Brand @bike.Model - @bike.Year @bike.Category">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@bike.Brand @bike.Model @bike.Year</h5>
-                    <a asp-controller="Bikes" asp-action="Details" asp-route-id="@bike.Id" class="btn btn-primary float-left">Details</a>
-                    <a asp-controller="Bikes" asp-action="Details" asp-route-id="@bike.Id" class="btn btn-primary float-right">Rent</a>
+                    <a asp-controller="Bike" asp-action="Details" asp-route-id="@bike.Id" class="btn btn-primary">Details</a>
                 </div>
             </div>
         </div>

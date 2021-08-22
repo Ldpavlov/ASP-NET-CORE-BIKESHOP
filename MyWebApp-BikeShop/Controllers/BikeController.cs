@@ -1,65 +1,80 @@
 ﻿namespace MyWebApp_BikeShop.Controllers
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
     using MyWebApp_BikeShop.Data;
-    using MyWebApp_BikeShop.Data.Models;
     using MyWebApp_BikeShop.Infrastructure;
     using MyWebApp_BikeShop.Models;
     using MyWebApp_BikeShop.Models.Bikes;
     using MyWebApp_BikeShop.Services.Bikes;
+    using MyWebApp_BikeShop.Services.Bikes.Models;
+    using MyWebApp_BikeShop.Services.Sellers;
     using System.Collections.Generic;
     using System.Linq;
 
     public class BikeController : Controller
     {
         private readonly BikeShopDbContext data;
-        private readonly IBikeService bikes;          
+        private IBikeService bikeService;
+        private ISellersService sellerService;
+        private readonly IMapper mapper;
+        private readonly IConfigurationProvider selectionMapper;
 
-        public BikeController(IBikeService bikes, BikeShopDbContext data)
+        public BikeController(BikeShopDbContext data, IBikeService bikeService, IMapper mapper, ISellersService sellersService)
         {
             this.data = data;
-            this.bikes = bikes;
+            this.bikeService = bikeService;
+            this.mapper = mapper;
+            this.selectionMapper = mapper.ConfigurationProvider;
+            this.sellerService = sellersService;
         }
 
         public IActionResult All([FromQuery] AllBikesViewModel query)
         {
-            var bikes = this.bikes.All(
-                query.Brand,
-                query.SearchTerm,
-                query.CurrentPage,
-                query.BikesPerPage);
+            var bikesQuery = bikeService.AllBikes();
 
-            var bikeBrands = this.bikes.AllBikeBrands();
-
-            query.TotalBikesCount = bikes.TotalBikesCount;
-            query.Brands = bikeBrands;
-            query.Bikes = bikes.Bikes.Select(b => new BikeListingViewModel
+            if (!string.IsNullOrEmpty(query.Brand))
             {
-                Id = b.Id,
-                Brand = b.Brand,
-                Model = b.Model,
-                Category = b.Category,
-                ImageUrl = b.ImageUrl,
-                Year = b.Year
-            });
+                bikesQuery = bikesQuery.Where(b => b.Brand == query.Brand);
+            }
+
+            if (!string.IsNullOrEmpty(query.SearchTerm))
+            {
+                bikesQuery = bikesQuery.Where(b =>
+                (b.Brand + " " + b.Model).ToLower().Contains(query.SearchTerm.ToLower()) ||
+                b.Description.ToLower().Contains(query.SearchTerm.ToLower()));
+            }            
+
+            var totalBikes = bikesQuery.Count();
+
+            var bikes = bikesQuery
+                .Skip((query.CurrentPage - 1) * AllBikesViewModel.BikesPerPage)
+                .Take(AllBikesViewModel.BikesPerPage)
+                .AsQueryable()
+                .ProjectTo<BikeListingViewModel>(this.selectionMapper);
+
+            var bikeBrands = bikeService.Brands();
+
+            query.TotalBikesCount = totalBikes;
+            query.Brands = bikeBrands;
+            query.Bikes = bikes;
 
             return View(query);
-        }        
-           
+        }
 
         [Authorize]
         public IActionResult Add()
         {
-            if (!this.UserIsSeller())
+            if (!this.sellerService.IsValidSeller(this.User.GetId()))
             {
                 return RedirectToAction(nameof(SellersController.Become), "Sellers");
             }
 
             return View(new AddBikeFormModel
             {
-                Categories = this.GetBikeCategories()
+                Categories = bikeService.GetAllCategories()
             });
         }
 
@@ -67,60 +82,40 @@
         [HttpPost]
         public IActionResult Add(AddBikeFormModel bike)
         {
-            var sellerId = this.data
-                .Sellers
-                .Where(s => s.UserId == this.User.GetId())
-                .Select(s => s.Id)
-                .FirstOrDefault();
+            var sellerId = bikeService.GetSellerId(this.User.GetId());
 
             if (sellerId == 0)
             {
                 return RedirectToAction(nameof(SellersController.Become), "Sellers");
             }
 
-            if (!this.data.Categories.Any(c => c.Id == bike.CategoryId))
+            if (!bikeService.CheckCategoryId(bike.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(bike.CategoryId), "Category does not exist.");
             }
 
             if (!ModelState.IsValid)
             {
-                bike.Categories = this.GetBikeCategories();
+                bike.Categories = bikeService.GetAllCategories();
                 return View(bike);
             }
 
-            var bikeData = new Bike
-            {
-                Brand = bike.Brand,
-                Model = bike.Model,
-                Description = bike.Description,
-                ImageUrl = bike.ImageUrl,
-                CategoryId = bike.CategoryId,
-                Year = bike.Year,
-                SellerId = sellerId
-            };
+            var bikeServiceModel = 
+                mapper.Map<AddBikeFormModel, AddBikeServiceModel>(bike);
 
-            this.data.Bikes.Add(bikeData);
-            this.data.SaveChanges();
+            bikeServiceModel.SellerId = sellerId;
+
+            bikeService.Add(bikeServiceModel);
 
             return RedirectToAction(nameof(All));
         }
 
-        private bool UserIsSeller() =>
-            this.data
-              .Sellers
-              .Any(s => s.UserId == this.User.GetId());
-
-        private IEnumerable<BikeCategoryViewModel> GetBikeCategories()
-            => this.data
-                .Categories
-                .Select(c => new BikeCategoryViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                })
-            .ToList();
-
+        [Authorize]
+        public IActionResult Details(int id)
+        {
+            var bike = this.bikeService.Details(id);
+            return View(bike);
+        }
     }
 
 }

@@ -1,6 +1,6 @@
-﻿namespace MyWebApp_BikeShop.Models.Bikes
+﻿namespace MyWebApp_BikeShop.Services.Bikes.Models
 {
-    public class BikeCategoryViewModel
+    public class BikeCategoryServiceModel
     {
         public int Id { get; init; }
 

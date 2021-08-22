@@ -1,0 +1,17 @@
+﻿@model DetailsServiceModel
+@{ ViewData["Title"] = "Bike Details"; }
+
+
+<div class="text-center">
+    <img style="width:700px;height:400px;" src="@Model.ImageUrl">
+
+    <h3 style="color:black">@Model.Brand @Model.Model - @Model.Year</h3>
+
+    <h5 style="color:black">@Model.Description</h5>
+
+    <a asp-area="" asp-controller="" class="btn btn-primary float-left">Buy</a>
+    <a asp-area="" asp-controller="" class="btn btn-primary float-right">Rent</a>
+</div>
+
+
+

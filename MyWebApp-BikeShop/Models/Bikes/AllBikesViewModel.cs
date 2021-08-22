@@ -6,7 +6,7 @@
 
     public class AllBikesViewModel
     {
-        public  int BikesPerPage = 3;
+        public const int BikesPerPage = 3;
 
         public string Brand { get; init; }
 
@@ -17,7 +17,7 @@
 
         public IEnumerable<string> Brands { get; set; }
 
-        public int CurrentPage { get; init; } = 9;
+        public int CurrentPage { get; init; } = 1;
 
         public int TotalBikesCount { get; set; }
     }

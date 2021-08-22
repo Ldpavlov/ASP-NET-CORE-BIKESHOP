@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace MyWebApp_BikeShop.Services.Bikes
+﻿namespace MyWebApp_BikeShop.Services.Bikes
 {
+    using MyWebApp_BikeShop.Services.Bikes.Models;
+    using System.Collections.Generic;
+
     public interface IBikeService
     {
-        BikeServiceModel All(
-            string brand,
-            string searchTerm,
-            int currentPage,
-            int bikesPerPage);
-
-        IEnumerable<string> AllBikeBrands();
+        public IEnumerable<AllBikeServiceModel> AllBikes();
+        public int GetSellerId(string userId);
+        public void Add(AddBikeServiceModel bike);
+        public bool CheckCategoryId(int id);
+        public int TotalBikes();
+        public IEnumerable<string> Brands();
+        public IEnumerable<BikeCategoryServiceModel> GetAllCategories();
+        public DetailsServiceModel Details(int id);
     }
 }

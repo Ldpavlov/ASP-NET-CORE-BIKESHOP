@@ -10,6 +10,7 @@ namespace MyWebApp_BikeShop
     using MyWebApp_BikeShop.Data;
     using MyWebApp_BikeShop.Infrastructure;
     using MyWebApp_BikeShop.Services.Bikes;
+    using MyWebApp_BikeShop.Services.Sellers;
 
     public class Startup
     {
@@ -36,9 +37,11 @@ namespace MyWebApp_BikeShop
                     options.Password.RequireUppercase = false;
                 })
                 .AddEntityFrameworkStores<BikeShopDbContext>();
-            services
-                .AddControllersWithViews();
+            services.AddAutoMapper(typeof(Startup));
+            services              
+                    .AddControllersWithViews();
             services.AddTransient<IBikeService, BikeService>();
+            services.AddTransient<ISellersService, SellerService>();
         }
       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

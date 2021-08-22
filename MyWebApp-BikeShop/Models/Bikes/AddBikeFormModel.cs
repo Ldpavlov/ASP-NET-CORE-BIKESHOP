@@ -2,6 +2,7 @@
 
 namespace MyWebApp_BikeShop.Models.Bikes
 {
+    using MyWebApp_BikeShop.Services.Bikes.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static DataConstants;
@@ -34,7 +35,7 @@ namespace MyWebApp_BikeShop.Models.Bikes
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
-        public IEnumerable<BikeCategoryViewModel> Categories { get; set; }
+        public IEnumerable<BikeCategoryServiceModel> Categories { get; set; }
 
     }
 }

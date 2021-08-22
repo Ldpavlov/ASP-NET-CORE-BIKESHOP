@@ -1,19 +1,29 @@
 ﻿namespace MyWebApp_BikeShop.Controllers
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyWebApp_BikeShop.Data;
     using MyWebApp_BikeShop.Data.Models;
     using MyWebApp_BikeShop.Infrastructure;
     using MyWebApp_BikeShop.Models.Sellers;
+    using MyWebApp_BikeShop.Services.Sellers;
     using System.Linq;
 
     public class SellersController : Controller
     {
         private readonly BikeShopDbContext data;
+        private ISellersService sellersService;
+        private readonly IMapper mapper;
+        private readonly IConfigurationProvider selectionMapper;
 
-        public SellersController(BikeShopDbContext data) =>
+        public SellersController(BikeShopDbContext data, ISellersService sellersService, IMapper mapper)
+        {
             this.data = data;
+            this.sellersService = sellersService;
+            this.mapper = mapper;
+            this.selectionMapper = mapper.ConfigurationProvider;
+        }
 
         [Authorize]
         public IActionResult Become() => View();
@@ -24,9 +34,7 @@
         {
             var userId = this.User.GetId();
 
-            var userIsAseller = this.data
-                .Sellers
-                .Any(s => s.UserId == userId);
+            var userIsAseller = sellersService.IsValidSeller(userId);
 
             if (userIsAseller)
             {
@@ -36,17 +44,14 @@
             if (!ModelState.IsValid)
             {
                 return View(seller);
-            }
+            }   
 
-            var sellerData = new Seller
-            {
-                Name = seller.Name,
-                PhoneNumber = seller.PhoneNumber,
-                UserId = userId
-            };
+            var serviceModel = 
+                mapper.Map<BecomeSellerFormModel, BecomeSellerServiceModel>(seller);
 
-            this.data.Sellers.Add(sellerData);
-            this.data.SaveChanges();
+            serviceModel.UserId = this.User.GetId();
+
+            sellersService.Become(serviceModel);
 
             return RedirectToAction("All", "Bike");
         }
