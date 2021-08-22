@@ -16,6 +16,8 @@
 
             this.CreateMap<BecomeSellerFormModel, BecomeSellerServiceModel>();
             this.CreateMap<Bike, DetailsServiceModel>();
+            this.CreateMap<DetailsServiceModel, AddBikeServiceModel>();
+
         }
     }
 }

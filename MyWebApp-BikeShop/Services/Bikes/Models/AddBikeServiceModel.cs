@@ -1,6 +1,5 @@
 ﻿namespace MyWebApp_BikeShop.Services.Bikes.Models
 {
-    using MyWebApp_BikeShop.Models.Bikes;
     using System.Collections.Generic;
 
     public class AddBikeServiceModel

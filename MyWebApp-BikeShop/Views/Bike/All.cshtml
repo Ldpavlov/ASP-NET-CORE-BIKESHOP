@@ -41,6 +41,11 @@
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@bike.Brand @bike.Model @bike.Year</h5>
                     <a asp-controller="Bike" asp-action="Details" asp-route-id="@bike.Id" class="btn btn-primary">Details</a>
+                    @if(bike.UserId == ViewBag.UserId)
+                      {
+                         <a asp-controller="Bike" asp-action="Edit" asp-route-id="@bike.Id" class="btn btn-warning">Edit</a>
+                      }
+
                 </div>
             </div>
         </div>

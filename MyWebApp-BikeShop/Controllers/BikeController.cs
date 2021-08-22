@@ -11,7 +11,6 @@
     using MyWebApp_BikeShop.Services.Bikes;
     using MyWebApp_BikeShop.Services.Bikes.Models;
     using MyWebApp_BikeShop.Services.Sellers;
-    using System.Collections.Generic;
     using System.Linq;
 
     public class BikeController : Controller
@@ -33,6 +32,8 @@
 
         public IActionResult All([FromQuery] AllBikesViewModel query)
         {
+            ViewBag.UserId = this.User.GetId();            
+
             var bikesQuery = bikeService.AllBikes();
 
             if (!string.IsNullOrEmpty(query.Brand))
@@ -54,6 +55,8 @@
                 .Take(AllBikesViewModel.BikesPerPage)
                 .AsQueryable()
                 .ProjectTo<BikeListingViewModel>(this.selectionMapper);
+
+            
 
             var bikeBrands = bikeService.Brands();
 
@@ -115,6 +118,75 @@
         {
             var bike = this.bikeService.Details(id);
             return View(bike);
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.GetId();
+
+            if (!this.sellerService.IsValidSeller(userId))
+            {
+                return RedirectToAction(nameof(SellersController.Become), "Dealers");
+            }
+
+            var bike = this.bikeService.Details(id);
+
+            if(bikeService.GetUserId(id) != userId)
+            {
+                return Unauthorized();
+            }
+
+            var bikeData = this.mapper.Map<DetailsServiceModel, AddBikeServiceModel>(bike);
+
+            bikeData.Categories = this.bikeService.GetAllCategories();
+
+            return View(bikeData);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, AddBikeFormModel bike)
+        {
+            var sellerId = this.sellerService.IdUser(this.User.GetId());
+
+            if(sellerId == 0)
+            {
+                return RedirectToAction(nameof(SellersController.Become), "Dealers");
+            }
+
+            if (!this.bikeService.CheckCategoryId(bike.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(bike.CategoryId), "Category does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                bike.Categories = this.bikeService.GetAllCategories();
+
+                return View(bike);
+            }
+
+            if (!this.bikeService.IsSeller(id, sellerId))
+            {
+                return BadRequest();
+            }
+
+            var bikeEdited = this.bikeService.Edit(
+                id,
+            bike.Brand,
+            bike.Model,
+            bike.Description,
+            bike.ImageUrl,
+            bike.Year,
+            bike.CategoryId);
+
+            if (!bikeEdited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 

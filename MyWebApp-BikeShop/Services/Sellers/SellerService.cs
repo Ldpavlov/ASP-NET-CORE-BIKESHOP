@@ -28,6 +28,14 @@
             this.data.Sellers.Add(sellerData);
             this.data.SaveChanges();
 
-        }        
+        }
+
+        public int IdUser(string userId)
+            => this.data
+                .Sellers
+                .Where(d => d.UserId == userId)
+                .Select(d => d.Id)
+                .FirstOrDefault();
+
     }
 }

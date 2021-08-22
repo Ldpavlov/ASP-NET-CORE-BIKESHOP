@@ -25,6 +25,7 @@
             => data.Bikes
                 .OrderByDescending(c => c.Id)
                 .Include(c => c.Category)
+                .Include(c => c.Seller)
                 .Select(c => new AllBikeServiceModel()
                 {
                     Id = c.Id,
@@ -33,7 +34,8 @@
                     ImageUrl = c.ImageUrl,
                     Year = c.Year,
                     Description = c.Description,
-                    Category = c.Category.Name
+                    Category = c.Category.Name,
+                    UserId = c.Seller.UserId
                 })
             .ToList();
 
@@ -96,5 +98,46 @@
                 .ProjectTo<DetailsServiceModel>(this.mapper)
                 .FirstOrDefault();
        
+        public bool Edit(int id,
+            string brand, 
+            string model, 
+            string description, 
+            string imageUrl, 
+            int year, 
+            int categoryId)
+        {
+            var bike = this.data.Bikes.Find(id);
+
+            if(bike == null)
+            {
+                return false;
+            }
+
+            bike.Brand = brand;
+            bike.CategoryId = categoryId;
+            bike.Model = model;
+            bike.Description = description;
+            bike.ImageUrl = imageUrl;
+            bike.Year = year;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public string GetUserId(int id) 
+            =>  this.data
+               .Bikes
+               .Include(b => b.Seller)
+               .Where(b => b.Id == id)
+               .Select(b => b.Seller.UserId)
+               .FirstOrDefault();
+
+        public bool IsSeller(int bikeId, int sellerId)
+            => this.data
+                .Bikes
+                .Any(c => c.Id == bikeId && c.SellerId == sellerId);
+
+
     }
 }

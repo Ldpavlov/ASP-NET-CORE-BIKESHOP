@@ -16,5 +16,7 @@
 
         public string Category { get; init; }
 
+        public string UserId { get; set; }
+
     }
 }
