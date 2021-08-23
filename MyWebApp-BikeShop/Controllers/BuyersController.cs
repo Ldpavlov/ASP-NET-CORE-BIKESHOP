@@ -48,6 +48,7 @@
             //buyerService.Become(serviceModel);
 
             //return RedirectToAction(nameof(BikeController.All), "Bike");
+
             var userId = this.User.GetId();
 
             var userIsABuyer = buyerService.IsBuyer(userId);
