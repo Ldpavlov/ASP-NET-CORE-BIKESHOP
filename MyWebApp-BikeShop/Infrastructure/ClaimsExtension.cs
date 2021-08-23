@@ -5,16 +5,7 @@
     public static class ClaimsExtension
     {
         public static string GetId(this ClaimsPrincipal user)
-        {
-            try
-            {
-                return user.FindFirst(ClaimTypes.NameIdentifier) == null ? null : user.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
-            catch (System.Exception)
-            {
-                return string.Empty;
-            }
-        }
-        
+        => user.FindFirst(ClaimTypes.NameIdentifier) == null ? null : user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
     }
 }

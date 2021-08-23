@@ -1,6 +1,7 @@
 namespace MyWebApp_BikeShop
 {
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -39,8 +40,11 @@ namespace MyWebApp_BikeShop
                 })
                 .AddEntityFrameworkStores<BikeShopDbContext>();
             services.AddAutoMapper(typeof(Startup));
-            services              
-                    .AddControllersWithViews();
+
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
             services.AddTransient<IBikeService, BikeService>();
             services.AddTransient<ISellersService, SellerService>();
             services.AddTransient<IBuyerService, BuyerService>();

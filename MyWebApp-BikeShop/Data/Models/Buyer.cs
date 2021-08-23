@@ -25,9 +25,5 @@
 
         [Required]
         public string UserId { get; set; }
-
-        public IEnumerable<Bike> Bikes { get; init; } = new List<Bike>();
-
-        public IEnumerable<BuyerVideos> Videos { get; set; }
     }
 }

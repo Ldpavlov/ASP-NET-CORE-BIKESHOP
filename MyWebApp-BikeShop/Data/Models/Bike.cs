@@ -1,5 +1,6 @@
 ﻿namespace MyWebApp_BikeShop.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static DataConstants;
 
@@ -32,5 +33,8 @@
         public int SellerId { get; init; }
 
         public Seller Seller { get; set; }
+
+        [Required]
+        public string PurchaseUrl { get; set; }
     }
 }

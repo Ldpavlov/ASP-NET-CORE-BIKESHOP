@@ -11,6 +11,7 @@
         public int Year { get; init; }
         public int CategoryId { get; init; }
         public int SellerId { get; set; }
+        public string PurchaseUrl { get; set; }
 
         public IEnumerable<BikeCategoryServiceModel> Categories { get; set; }
     }

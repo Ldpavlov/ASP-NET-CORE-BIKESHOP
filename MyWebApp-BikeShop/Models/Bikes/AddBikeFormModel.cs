@@ -35,6 +35,11 @@ namespace MyWebApp_BikeShop.Models.Bikes
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
+        [Required]
+        [Display(Name = "Purchase URL")]
+        [Url]
+        public string PurchaseUrl { get; set; }
+
         public IEnumerable<BikeCategoryServiceModel> Categories { get; set; }
 
     }

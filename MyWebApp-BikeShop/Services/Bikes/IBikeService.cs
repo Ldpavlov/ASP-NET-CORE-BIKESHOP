@@ -17,6 +17,6 @@
         public string GetUserId(int id);
         public bool IsSeller(int bikeId, int sellerId);
         public void Delete(int id);
-        public DetailsServiceModel Rent(int id);
+        public DetailsServiceModel Buy(int id);
     }
 }

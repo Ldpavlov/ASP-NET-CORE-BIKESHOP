@@ -58,7 +58,8 @@
                 ImageUrl = bike.ImageUrl,
                 CategoryId = bike.CategoryId,
                 Year = bike.Year,
-                SellerId = bike.SellerId
+                SellerId = bike.SellerId,
+                PurchaseUrl = bike.PurchaseUrl
             };
 
             this.data.Bikes.Add(bikeData);
@@ -145,7 +146,7 @@
             this.data.SaveChanges();
         }
 
-        public DetailsServiceModel Rent(int id)
+        public DetailsServiceModel Buy(int id)
            => this.data
                .Bikes
                .Where(b => b.Id == id)

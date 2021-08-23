@@ -16,7 +16,6 @@
         public DbSet<Category> Categories { get; init; }
         public DbSet<Seller> Sellers { get; init; }
         public DbSet<Buyer> Buyers { get; init; }
-        public DbSet<Video> Videos { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,21 +43,7 @@
                     .WithOne()
                     .HasForeignKey<Buyer>(s => s.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<BuyerVideos>()
-              .HasKey(sv => new { sv.BuyerId, sv.VideoId });
-
-            //builder.Entity<Buyer>()
-            //    .HasMany(s => s.Videos)
-            //    .WithOne(sv => sv.Student)
-            //    .HasForeignKey(sv => sv.BuyerId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Video>()
-                .HasMany(v => v.Views)
-                .WithOne(sv => sv.Video)
-                .HasForeignKey(sv => sv.VideoId)
-                .OnDelete(DeleteBehavior.Restrict);
+            
 
             base.OnModelCreating(builder);
         }

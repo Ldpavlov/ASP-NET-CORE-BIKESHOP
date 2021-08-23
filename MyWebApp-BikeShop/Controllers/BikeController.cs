@@ -122,7 +122,7 @@
         }
 
         [Authorize]
-        public IActionResult Rent(int id)
+        public IActionResult Buy(int id)
         {
             if (!this.buyerService.IsBuyer(this.User.GetId()))
             {
@@ -130,7 +130,7 @@
             }
 
             var bike = this.bikeService.Details(id);
-            return View(bike);
+            return Redirect(bike.PurchaseUrl);
         }
 
 
