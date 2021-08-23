@@ -10,6 +10,7 @@ namespace MyWebApp_BikeShop
     using MyWebApp_BikeShop.Data;
     using MyWebApp_BikeShop.Infrastructure;
     using MyWebApp_BikeShop.Services.Bikes;
+    using MyWebApp_BikeShop.Services.Buyers;
     using MyWebApp_BikeShop.Services.Sellers;
 
     public class Startup
@@ -42,6 +43,7 @@ namespace MyWebApp_BikeShop
                     .AddControllersWithViews();
             services.AddTransient<IBikeService, BikeService>();
             services.AddTransient<ISellersService, SellerService>();
+            services.AddTransient<IBuyerService, BuyerService>();
         }
       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

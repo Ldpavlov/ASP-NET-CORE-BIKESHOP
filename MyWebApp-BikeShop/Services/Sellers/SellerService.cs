@@ -1,5 +1,6 @@
 ﻿namespace MyWebApp_BikeShop.Services.Sellers
 {
+    using AutoMapper;
     using MyWebApp_BikeShop.Data;
     using MyWebApp_BikeShop.Data.Models;
     using System.Linq;
@@ -7,9 +8,14 @@
     public class SellerService : ISellersService
     {
         private readonly BikeShopDbContext data;
+        private IMapper mapper;
 
-        public SellerService(BikeShopDbContext data)
-            => this.data = data;
+        public SellerService(BikeShopDbContext data, IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper;
+        }
+            
 
         public bool IsValidSeller(string userId)
             => this.data
@@ -18,16 +24,10 @@
 
         public void Become(BecomeSellerServiceModel seller)
         {
-            var sellerData = new Seller
-            {
-                Name = seller.Name,
-                PhoneNumber = seller.PhoneNumber,
-                UserId = seller.UserId
-            };                
+            var sellerData = mapper.Map<BecomeSellerServiceModel, Seller>(seller);         
 
             this.data.Sellers.Add(sellerData);
             this.data.SaveChanges();
-
         }
 
         public int IdUser(string userId)

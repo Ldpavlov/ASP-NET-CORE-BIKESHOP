@@ -20,8 +20,15 @@
         public const int SellerPhoneMaxLength = 20;   
         public const int SellerPhoneMinLength = 8;   
         
-        public const int CategoryNameMaxLength = 30;    
-        
+        public const int CategoryNameMaxLength = 30;
 
+        public const int BuyerNameMaxLength = 30;
+        public const int BuyerNameMinLength = 3;
+
+        public const int BuyerPhoneMaxLength = 20;
+        public const int BuyerPhoneMinLength = 8;
+
+        public const int AddressMinLength = 10;
+        public const int AddressMaxLength = 50;
     }
 }
