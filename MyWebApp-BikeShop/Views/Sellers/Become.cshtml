@@ -1,8 +1,6 @@
 ﻿@model BecomeSellerFormModel
 
-@{ 
-    ViewData["Title"] = "Become Seller";
-}
+@{ ViewData["Title"] = "Become Seller"; }
 
 <div class="container">
     <div class="row">
@@ -27,3 +25,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

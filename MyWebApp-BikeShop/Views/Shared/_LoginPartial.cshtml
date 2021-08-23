@@ -1,34 +1,49 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using MyWebApp_BikeShop.Data.Models
+@using Microsoft.AspNetCore.Identity
+@using MyWebApp_BikeShop.Infrastructure;
+
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IBuyerService Buyers
+@inject ISellersService Sellers
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
-    {        
-        
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-controller="Sellers" asp-action="Become">Become seller</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-controller="Buyers" asp-action="Become">Become Buyer</a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Your account</a>
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
+     {
+         var isSeller = Sellers.IsValidSeller(User.GetId());
+         var isBuyer = Buyers.IsBuyer(User.GetId());
+
+        @if (!isSeller && !isBuyer)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-controller="Sellers" asp-action="Become">Become seller</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-controller="Buyers" asp-action="Become">Become Buyer</a>
+            </li>
+        }
+        else if(!isBuyer)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-controller="Buyers" asp-action="Become">Become Buyer</a>
+            </li>
+        }
+       
+
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Your account</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                </form>
+            </li> }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>}
 </ul>

@@ -1,17 +1,26 @@
-﻿@model DetailsServiceModel
+﻿@using MyWebApp_BikeShop.Infrastructure;
+@using Microsoft.AspNetCore.Identity
+@model DetailsServiceModel
+@inject IBuyerService Buyers
+@inject SignInManager<IdentityUser> SignInManager
+
 @{ ViewData["Title"] = "Bike Details"; }
 
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="text-center">
+     
+        <img style="width:700px;height:400px;" src="@Model.ImageUrl">
 
-<div class="text-center">
-    <img style="width:700px;height:400px;" src="@Model.ImageUrl">
+        <h3 style="color:black">@Model.Brand @Model.Model - @Model.Year</h3>
 
-    <h3 style="color:black">@Model.Brand @Model.Model - @Model.Year</h3>
-
-    <h5 style="color:black">@Model.Description</h5>
-
-    <a asp-area="" asp-controller="" class="btn btn-primary float-left">Buy</a>
-    <a asp-area="" asp-controller="" class="btn btn-primary float-right">Rent</a>
-</div>
+        <h5 style="color:black">@Model.Description</h5>
+    
+        <a asp-area="" asp-controller="Bike" asp-action="Rent" class="btn btn-primary float-left">Buy</a>
+        <a asp-area="" asp-controller="Bike" asp-action="Rent" class="btn btn-primary float-right">Rent</a>
+    
+    </div> 
+}
 
 
 

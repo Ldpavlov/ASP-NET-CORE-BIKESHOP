@@ -10,6 +10,7 @@
     using MyWebApp_BikeShop.Models.Bikes;
     using MyWebApp_BikeShop.Services.Bikes;
     using MyWebApp_BikeShop.Services.Bikes.Models;
+    using MyWebApp_BikeShop.Services.Buyers;
     using MyWebApp_BikeShop.Services.Sellers;
     using System.Linq;
 
@@ -17,17 +18,19 @@
     {
         private readonly BikeShopDbContext data;
         private IBikeService bikeService;
+        private IBuyerService buyerService;
         private ISellersService sellerService;
         private readonly IMapper mapper;
         private readonly IConfigurationProvider selectionMapper;
 
-        public BikeController(BikeShopDbContext data, IBikeService bikeService, IMapper mapper, ISellersService sellersService)
+        public BikeController(BikeShopDbContext data, IBikeService bikeService, IMapper mapper, ISellersService sellersService, IBuyerService buyerService)
         {
             this.data = data;
             this.bikeService = bikeService;
             this.mapper = mapper;
             this.selectionMapper = mapper.ConfigurationProvider;
             this.sellerService = sellersService;
+            this.buyerService = buyerService;
         }
 
         public IActionResult All([FromQuery] AllBikesViewModel query)
@@ -117,6 +120,19 @@
             var bike = this.bikeService.Details(id);
             return View(bike);
         }
+
+        [Authorize]
+        public IActionResult Rent(int id)
+        {
+            if (!this.buyerService.IsBuyer(this.User.GetId()))
+            {
+                return RedirectToAction(nameof(BuyersController.Become), "Buyers");
+            }
+
+            var bike = this.bikeService.Details(id);
+            return View(bike);
+        }
+
 
         [Authorize]
         public IActionResult Edit(int id)

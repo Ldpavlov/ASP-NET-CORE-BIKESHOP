@@ -144,6 +144,13 @@
             this.data.Bikes.Remove(bike);
             this.data.SaveChanges();
         }
-        
+
+        public DetailsServiceModel Rent(int id)
+           => this.data
+               .Bikes
+               .Where(b => b.Id == id)
+               .ProjectTo<DetailsServiceModel>(this.mapper)
+               .FirstOrDefault();
+
     }
 }

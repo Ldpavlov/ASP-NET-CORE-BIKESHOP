@@ -8,7 +8,7 @@
         {
             try
             {
-                return user.FindFirst(ClaimTypes.NameIdentifier).Value;
+                return user.FindFirst(ClaimTypes.NameIdentifier) == null ? null : user.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
             catch (System.Exception)
             {
