@@ -45,9 +45,12 @@
             <a asp-controller="Bike" asp-action="Details" asp-route-id="@bike.Id" class="btn btn-primary">Details</a>
             @if (bike.UserId == ViewBag.UserId || User.IsAdmin())
             {
-                    <a asp-controller="Bike" asp-action="Edit" asp-route-id="@bike.Id" class="btn btn-warning">Edit</a>
-                    <a asp-controller="Bike" asp-action="Delete" asp-route-id="@bike.Id" class="btn btn-outline-danger">Delete</a>}
-
+               <a asp-controller="Bike" asp-action="Edit" asp-route-id="@bike.Id" class="btn btn-warning">Edit</a>
+               @if (!User.IsAdmin())
+               {
+                <a asp-controller="Bike" asp-action="Delete" asp-route-id="@bike.Id" class="btn btn-outline-danger">Delete</a>           
+               }
+             }
         </div>
     </div>
 </div>}
