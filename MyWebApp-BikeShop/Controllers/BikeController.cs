@@ -139,19 +139,21 @@
         {
             var userId = this.User.GetId();
 
-            if (!this.sellerService.IsValidSeller(userId))
+            // && !User.IsAdmin()
+            if (!this.sellerService.IsValidSeller(userId) && !User.IsAdmin())
             {
-                return RedirectToAction(nameof(SellersController.Become), "Dealers");
+                return RedirectToAction(nameof(SellersController.Become), "Sellers");
             }
 
             var bike = this.bikeService.Details(id);
 
-            if(bikeService.GetUserId(id) != userId)
+            // && !User.IsAdmin()
+            if (bikeService.GetUserId(id) != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
 
-            var bikeData = this.mapper.Map<DetailsServiceModel, AddBikeServiceModel>(bike);
+            var bikeData = this.mapper.Map<DetailsServiceModel, AddBikeFormModel>(bike);
 
             bikeData.Categories = this.bikeService.GetAllCategories();
 
@@ -164,7 +166,8 @@
         {
             var sellerId = this.sellerService.IdUser(this.User.GetId());
 
-            if(sellerId == 0)
+            //!User.IsAdmin()
+            if (sellerId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(SellersController.Become), "Dealers");
             }
@@ -181,7 +184,9 @@
                 return View(bike);
             }
 
-            if (!this.bikeService.IsSeller(id, sellerId))
+            //&& !User.IsAdmin()
+
+            if (!this.bikeService.IsSeller(id, sellerId) && !User.IsAdmin())
             {
                 return BadRequest();
             }

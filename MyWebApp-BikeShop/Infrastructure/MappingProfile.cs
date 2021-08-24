@@ -20,7 +20,7 @@
             this.CreateMap<BecomeSellerServiceModel, Seller>();
 
             this.CreateMap<Bike, DetailsServiceModel>();
-            this.CreateMap<DetailsServiceModel, AddBikeServiceModel>();
+            this.CreateMap<DetailsServiceModel, AddBikeFormModel>();
 
             //swaped
             this.CreateMap<BecomeABuyerServiceModel, Buyer>();

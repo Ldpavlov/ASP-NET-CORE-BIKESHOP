@@ -38,13 +38,15 @@ namespace MyWebApp_BikeShop
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<BikeShopDbContext>();
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-            });
+            services              
+                    .AddControllersWithViews(options =>
+                    {
+                        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                    });
             services.AddTransient<IBikeService, BikeService>();
             services.AddTransient<ISellersService, SellerService>();
             services.AddTransient<IBuyerService, BuyerService>();

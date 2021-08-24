@@ -1,7 +1,6 @@
 ﻿@using MyWebApp_BikeShop.Data.Models
 @using Microsoft.AspNetCore.Identity
 @using MyWebApp_BikeShop.Infrastructure;
-
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IBuyerService Buyers
@@ -9,11 +8,12 @@
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
-     {
-         var isSeller = Sellers.IsValidSeller(User.GetId());
-         var isBuyer = Buyers.IsBuyer(User.GetId());
+    {
+        var isSeller = Sellers.IsValidSeller(User.GetId());
+        var isBuyer = Buyers.IsBuyer(User.GetId());
+        var isAdmin = User.IsAdmin();
 
-        @if (!isSeller && !isBuyer)
+        @if (!isSeller && !isBuyer )
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-controller="Sellers" asp-action="Become">Become seller</a>
