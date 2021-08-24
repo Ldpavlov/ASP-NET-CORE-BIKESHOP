@@ -13,7 +13,7 @@
         var isBuyer = Buyers.IsBuyer(User.GetId());
         var isAdmin = User.IsAdmin();
 
-        @if (!isSeller && !isBuyer )
+        @if (!isSeller && !isBuyer && !isAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-controller="Sellers" asp-action="Become">Become seller</a>
@@ -22,7 +22,7 @@
                 <a class="nav-link text-dark" asp-area="Identity" asp-controller="Buyers" asp-action="Become">Become Buyer</a>
             </li>
         }
-        else if(!isBuyer)
+        else if(!isBuyer && !isAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-controller="Buyers" asp-action="Become">Become Buyer</a>
