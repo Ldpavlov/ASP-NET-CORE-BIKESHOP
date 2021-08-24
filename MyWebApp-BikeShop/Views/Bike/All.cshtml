@@ -39,8 +39,8 @@
     {
 <div class="col-md-4">
     <div class="card mb-3">
-        <img class="card-img-top" src="@bike.ImageUrl" alt="@bike.Brand @bike.Model - @bike.Year @bike.Category">
-        <div class="card-body text-center">
+        <img class="card-img-top bg-secondary" src="@bike.ImageUrl" alt="@bike.Brand @bike.Model - @bike.Year @bike.Category">
+        <div class="card-body text-center bg-info">
             <h5 class="card-title text-center">@bike.Brand @bike.Model @bike.Year</h5>
             <a asp-controller="Bike" asp-action="Details" asp-route-id="@bike.Id" class="btn btn-primary">Details</a>
             @if (bike.UserId == ViewBag.UserId || User.IsAdmin())
