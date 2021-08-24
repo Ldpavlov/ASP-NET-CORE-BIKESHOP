@@ -1,11 +1,9 @@
-﻿using MyWebApp_BikeShop.Data;
-
-namespace MyWebApp_BikeShop.Models.Bikes
+﻿namespace MyWebApp_BikeShop.Models.Bikes
 {
     using MyWebApp_BikeShop.Services.Bikes.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using static DataConstants;
+    using static MyWebApp_BikeShop.Data.DataConstants;
 
     public class AddBikeFormModel
     {

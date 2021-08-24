@@ -1,6 +1,5 @@
 ﻿namespace MyWebApp_BikeShop.Services.Buyers.Model
 {
-
     public class BecomeABuyerServiceModel
     {
         public string FullName { get; set; }

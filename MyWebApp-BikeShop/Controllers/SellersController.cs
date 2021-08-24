@@ -4,11 +4,9 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyWebApp_BikeShop.Data;
-    using MyWebApp_BikeShop.Data.Models;
     using MyWebApp_BikeShop.Infrastructure;
     using MyWebApp_BikeShop.Models.Sellers;
     using MyWebApp_BikeShop.Services.Sellers;
-    using System.Linq;
 
     public class SellersController : Controller
     {
