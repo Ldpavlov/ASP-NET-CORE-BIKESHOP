@@ -14,8 +14,7 @@
         {
             this.data = data;
             this.mapper = mapper;
-        }
-            
+        }            
 
         public bool IsValidSeller(string userId)
             => this.data

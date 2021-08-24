@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MyWebApp_BikeShop
+﻿namespace MyWebApp_BikeShop
 {
     public class WebConstants
     {
         public const string AdministratorRoleName = "Administrator";
+        public const string GlobalMessageKey = "GlobalMessage";
     }
 }

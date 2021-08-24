@@ -28,27 +28,7 @@
         [HttpPost]
         [Authorize]
         public IActionResult Become(BecomeABuyerFormModel model)
-        {
-            //var userId = this.User.GetId();
-
-
-            //if (buyerService.IsBuyer(userId))
-            //{
-            //    return BadRequest();
-            //}
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(model);
-            //}
-
-            //var serviceModel = mapper.Map<BecomeABuyerFormModel, BecomeABuyerServiceModel>(model);
-            //serviceModel.UserId = userId;
-
-            //buyerService.Become(serviceModel);
-
-            //return RedirectToAction(nameof(BikeController.All), "Bike");
-
+        {            
             var userId = this.User.GetId();
 
             var userIsABuyer = buyerService.IsBuyer(userId);

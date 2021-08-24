@@ -19,7 +19,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
-            <div class="container">
+            <div class="container">                
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Bike Shop</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -28,15 +28,23 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @if (!User.IsAdmin())
-                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Bike" asp-action="Add">Add Bike</a>
-                            </li>
-                         }
+                        {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Bike" asp-action="Add">Add Bike</a>
+                </li>
+}
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Bike" asp-action="All">All Bikes</a>
                         </li>
                     </ul>
+
+                    @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
+                     {                                 
+                        <div class="alert alert-success text-center" role="alert">
+                            @TempData[WebConstants.GlobalMessageKey]
+                        </div>
+                     }
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>

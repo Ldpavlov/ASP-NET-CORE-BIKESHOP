@@ -13,6 +13,7 @@
     using MyWebApp_BikeShop.Services.Buyers;
     using MyWebApp_BikeShop.Services.Sellers;
     using System.Linq;
+    using static WebConstants;
 
     public class BikeController : Controller
     {
@@ -111,6 +112,7 @@
 
             bikeService.Add(bikeServiceModel);
 
+            TempData[GlobalMessageKey] = "Bike is added!";
             return RedirectToAction(nameof(All));
         }
 
@@ -139,7 +141,6 @@
         {
             var userId = this.User.GetId();
 
-            // && !User.IsAdmin()
             if (!this.sellerService.IsValidSeller(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(SellersController.Become), "Sellers");
@@ -147,7 +148,6 @@
 
             var bike = this.bikeService.Details(id);
 
-            // && !User.IsAdmin()
             if (bikeService.GetUserId(id) != userId && !User.IsAdmin())
             {
                 return Unauthorized();
@@ -166,7 +166,6 @@
         {
             var sellerId = this.sellerService.IdUser(this.User.GetId());
 
-            //!User.IsAdmin()
             if (sellerId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(SellersController.Become), "Dealers");
@@ -183,8 +182,6 @@
 
                 return View(bike);
             }
-
-            //&& !User.IsAdmin()
 
             if (!this.bikeService.IsSeller(id, sellerId) && !User.IsAdmin())
             {
@@ -204,7 +201,7 @@
             {
                 return BadRequest();
             }
-
+            TempData[GlobalMessageKey] = "Bike is edited!";
             return RedirectToAction(nameof(Details), new { id });
         }
 
@@ -224,6 +221,8 @@
 
             this.bikeService.Delete(id);
 
+
+            TempData[GlobalMessageKey] = "Bike is deleted!";
             return RedirectToAction(nameof(BikeController.All), "Bike");
         }
     }
