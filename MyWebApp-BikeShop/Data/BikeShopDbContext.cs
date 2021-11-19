@@ -16,7 +16,6 @@
         public DbSet<Category> Categories { get; init; }
         public DbSet<Seller> Sellers { get; init; }
         public DbSet<Buyer> Buyers { get; init; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Bike>()
